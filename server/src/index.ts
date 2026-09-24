@@ -195,11 +195,11 @@ if (clientDistPath) {
 // Global Error Handler
 app.use(errorHandler);
 
-const PORT = parseInt(ENV.PORT, 10) || 5000;
+const PORT = Number(process.env.PORT || ENV.PORT || 5000);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n======================================================`);
-  console.log(`🚀 ConsultFlow Server running on port ${PORT}`);
+  console.log(`🚀 ConsultFlow Server running on port ${PORT} (0.0.0.0)`);
   console.log(`📡 Health check: /api/health`);
   console.log(`======================================================\n`);
 });
