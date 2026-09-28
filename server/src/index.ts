@@ -197,11 +197,14 @@ app.use(errorHandler);
 
 const PORT = Number(process.env.PORT || ENV.PORT || 5000);
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n======================================================`);
-  console.log(`🚀 ConsultFlow Server running on port ${PORT} (0.0.0.0)`);
-  console.log(`📡 Health check: /api/health`);
-  console.log(`======================================================\n`);
-});
+// On Vercel the app is invoked as a serverless function via api/index.ts, so it must not bind a port.
+if (!process.env.VERCEL) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n======================================================`);
+    console.log(`🚀 ConsultFlow Server running on port ${PORT} (0.0.0.0)`);
+    console.log(`📡 Health check: /api/health`);
+    console.log(`======================================================\n`);
+  });
+}
 
 export default app;
