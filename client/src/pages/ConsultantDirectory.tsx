@@ -149,6 +149,11 @@ export const ConsultantDirectory: React.FC<DirectoryProps> = ({ onNavigate }) =>
                   </svg>
                   <span>Connect on LinkedIn</span>
                 </a>
+                <div className="space-y-1 w-full flex justify-center">
+                  <div className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-200 bg-white text-[11px] sm:text-xs italic text-zinc-800 shadow-xs max-w-[290px] text-center leading-relaxed">
+                    <span>"Networking & connections will take you places where your resume couldn't..."</span>
+                  </div>
+                </div>
 
                 {/* Price Block */}
                 <div className="w-full pt-3 border-t border-zinc-200/80">
