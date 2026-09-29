@@ -187,11 +187,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
 
                 <div className="p-2.5 bg-zinc-50/80 rounded-b-2xl">
                   <a
-                    href="mailto:support@engiplex.com"
+                    href="mailto:support@engiplex.in"
                     className="flex items-center gap-2 px-2 py-1 text-[11px] text-zinc-600 hover:text-emerald-700 transition-colors font-medium"
                   >
                     <Mail className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>support@engiplex.com</span>
+                    <span>support@engiplex.in</span>
                   </a>
                 </div>
               </div>

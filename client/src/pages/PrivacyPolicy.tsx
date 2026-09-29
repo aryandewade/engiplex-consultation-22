@@ -110,8 +110,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
           <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-4 text-xs sm:text-sm space-y-2 font-mono text-zinc-800">
             <div><strong className="font-sans text-zinc-600">Legal Entity Name:</strong> ENGIPLEX Consultation Services</div>
             <div><strong className="font-sans text-zinc-600">Registered Address:</strong> India</div>
-            <div><strong className="font-sans text-zinc-600">Contact Email:</strong> support@engiplex.com</div>
-            <div><strong className="font-sans text-zinc-600">Grievance Officer / Data Protection Contact:</strong> grievance@engiplex.com (mandatory under DPDP Act & IT Rules)</div>
+            <div><strong className="font-sans text-zinc-600">Contact Email:</strong> support@engiplex.in</div>
           </div>
         </section>
 
@@ -457,9 +456,6 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
               <span className="text-xs text-zinc-600">Withdraw previously granted consent at any time, as described in Section 4.</span>
             </div>
           </div>
-          <p className="text-xs text-zinc-600 pt-1">
-            To exercise these rights or raise questions, click the <button onClick={() => setIsDeleteModalOpen(true)} className="text-rose-600 font-bold hover:underline">Delete My Data</button> button above or write to <strong className="text-zinc-900">grievance@engiplex.com</strong>. If unsatisfied with our resolution, you may approach the Data Protection Board of India.
-          </p>
         </section>
 
         {/* 13. Consultant Confidentiality */}
@@ -517,51 +513,19 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
           </p>
         </section>
 
-        {/* 18. Grievance Officer */}
-        <section id="grievance-officer" className="space-y-4 border-t border-zinc-100 pt-8">
-          <div className="flex items-center gap-2.5 text-zinc-900 font-display text-lg sm:text-xl font-bold">
-            <Mail className="w-5 h-5 text-emerald-600" />
-            <h2>18. Grievance Officer</h2>
-          </div>
-          <p>
-            In accordance with the Information Technology Rules, 2011 and the DPDP Act, 2023, the details of our Grievance Officer are:
-          </p>
-
-          <div className="p-5 rounded-2xl bg-zinc-50 border border-zinc-200 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
-            <div>
-              <span className="text-zinc-500 block text-[11px] uppercase font-bold tracking-wider">Name</span>
-              <strong className="text-zinc-900">Grievance Redressal Officer</strong>
-            </div>
-            <div>
-              <span className="text-zinc-500 block text-[11px] uppercase font-bold tracking-wider">Designation</span>
-              <strong className="text-zinc-900">Data Protection &amp; Grievance Officer</strong>
-            </div>
-            <div>
-              <span className="text-zinc-500 block text-[11px] uppercase font-bold tracking-wider">Email</span>
-              <a href="mailto:grievance@engiplex.com" className="text-emerald-700 font-semibold hover:underline">
-                grievance@engiplex.com
-              </a>
-            </div>
-            <div>
-              <span className="text-zinc-500 block text-[11px] uppercase font-bold tracking-wider">Response Time</span>
-              <span className="text-zinc-800">Acknowledged within 24–48 hours; resolved within 15–30 days</span>
-            </div>
-          </div>
-        </section>
-
         {/* 19. Contact Us */}
         <section id="contact-us" className="space-y-4 border-t border-zinc-100 pt-8">
           <div className="flex items-center gap-2.5 text-zinc-900 font-display text-lg sm:text-xl font-bold">
             <HelpCircle className="w-5 h-5 text-emerald-600" />
-            <h2>19. Contact Us</h2>
+            <h2>18. Contact Us</h2>
           </div>
           <p>
             If you have questions about this Privacy Policy or how your data is handled, please reach out to:
           </p>
           <div className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200 text-xs sm:text-sm text-emerald-950 space-y-1">
             <div><strong>Platform:</strong> ENGIPLEX Consultation</div>
-            <div><strong>Email:</strong> <a href="mailto:support@engiplex.com" className="font-semibold underline">support@engiplex.com</a></div>
-            <div><strong>Website:</strong> <span className="font-semibold">engiplex.com</span></div>
+            <div><strong>Email:</strong> <a href="mailto:support@engiplex.in" className="font-semibold underline">support@engiplex.in</a></div>
+            <div><strong>Website:</strong> <span className="font-semibold">engiplex.in</span></div>
           </div>
         </section>
 

@@ -244,8 +244,8 @@ export const ConsultantProfile: React.FC<ProfileProps> = ({ consultantId, onNavi
                       <span className="text-[10px] text-zinc-400">Verified Client</span>
                     </div>
 
-                    <p className="text-xs text-zinc-700 leading-relaxed italic">
-                      "{rev.comment}"
+                    <p className="text-xs text-zinc-700 leading-relaxed">
+                      {(rev.comment || '').replace(/^["“”']+|["“”']+$/g, '')}
                     </p>
                   </div>
                 ))
