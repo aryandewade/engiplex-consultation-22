@@ -25,4 +25,7 @@ export const ENV = {
   SMTP_PASS:
     process.env.SMTP_PASS ||
     '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',
+  RESEND_API_KEY: process.env.RESEND_API_KEY || '',
+  GMAIL_USER: process.env.GMAIL_USER || '',
+  GMAIL_APP_PASS: process.env.GMAIL_APP_PASS || '',
 };

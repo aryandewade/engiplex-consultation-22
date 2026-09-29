@@ -257,7 +257,7 @@ export const reserveBookingSlot = async (input: ReserveSlotInput) => {
       userId: user,
     });
 
-    // Send confirmation email asynchronously without delaying the HTTP response
+    // Send confirmation email to client
     if (user && user.email) {
       const emailHtml = buildBookingConfirmationEmail({
         customerName: user.name || 'Client',
@@ -271,14 +271,16 @@ export const reserveBookingSlot = async (input: ReserveSlotInput) => {
         meetingLink: activeBooking.meetingLink,
       });
 
-      sendEmail({
-        to: user.email,
-        subject: `Your Student Consultation with ${consultant.name || 'Ashish Lichode'} is Confirmed! (Pay What You Can)`,
-        html: emailHtml,
-        receiptId,
-      }).catch((e) => {
-        console.error('[Email] Background confirmation dispatch failed:', e);
-      });
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: `Your Student Consultation with ${consultant.name || 'Ashish Lichode'} is Confirmed! (Pay What You Can)`,
+          html: emailHtml,
+          receiptId,
+        });
+      } catch (e) {
+        console.error('[Email] Confirmation dispatch failed:', e);
+      }
     }
 
     return {

@@ -20,7 +20,20 @@ export const sentEmailsLog: {
 
 let transporter: nodemailer.Transporter | null = null;
 
-if (ENV.SMTP_HOST && ENV.SMTP_USER) {
+if (ENV.GMAIL_USER && ENV.GMAIL_APP_PASS) {
+  try {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: ENV.GMAIL_USER,
+        pass: ENV.GMAIL_APP_PASS,
+      },
+    });
+    console.log('[Email] Configured Gmail SMTP transport for', ENV.GMAIL_USER);
+  } catch (err) {
+    console.warn('[Email] Gmail configuration invalid:', err);
+  }
+} else if (ENV.SMTP_HOST && ENV.SMTP_USER) {
   try {
     transporter = nodemailer.createTransport({
       host: ENV.SMTP_HOST,
@@ -58,8 +71,37 @@ export const sendEmail = async (payload: EmailPayload): Promise<boolean> => {
     if (payload.receiptId) console.log(`[Receipt ID]: ${payload.receiptId}`);
     console.log(`======================================================\n`);
 
-    // 1. Send via Brevo HTTP API (Fastest & most reliable)
-    const brevoApiKey = ENV.BREVO_API_KEY || ENV.EMAIL_API_KEY;
+    // 1. Send via Resend API if configured
+    const resendApiKey = ENV.RESEND_API_KEY || (ENV.EMAIL_API_KEY?.startsWith('re_') ? ENV.EMAIL_API_KEY : '');
+    if (resendApiKey) {
+      try {
+        const resendRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: `${ENV.EMAIL_FROM_NAME || 'ENGIPLEX Consultation'} <${ENV.EMAIL_FROM}>`,
+            to: [payload.to.trim()],
+            subject: payload.subject,
+            html: payload.html,
+          }),
+        });
+        const resendData: any = await resendRes.json().catch(() => ({}));
+        if (resendRes.ok && resendData.id) {
+          console.log(`[Resend Email Sent Successfully] ID: ${resendData.id} to ${payload.to}`);
+          return true;
+        } else {
+          console.warn(`[Resend API Error ${resendRes.status}]:`, resendData);
+        }
+      } catch (resendErr) {
+        console.error('[Resend Email Error]', resendErr);
+      }
+    }
+
+    // 2. Send via Brevo HTTP API
+    const brevoApiKey = ENV.BREVO_API_KEY || (ENV.EMAIL_API_KEY?.startsWith('xkeysib-') ? ENV.EMAIL_API_KEY : '');
     if (brevoApiKey && brevoApiKey.startsWith('xkeysib-')) {
       try {
         const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -71,8 +113,8 @@ export const sendEmail = async (payload: EmailPayload): Promise<boolean> => {
           },
           body: JSON.stringify({
             sender: {
-              name: 'Engiplex Consultancy',
-              email: 'engiplexservices@gmail.com',
+              name: ENV.EMAIL_FROM_NAME || 'Engiplex Consultancy',
+              email: ENV.EMAIL_FROM || 'engiplexservices@gmail.com',
             },
             to: [
               {
@@ -80,39 +122,46 @@ export const sendEmail = async (payload: EmailPayload): Promise<boolean> => {
               },
             ],
             replyTo: {
-              name: 'Engiplex Consultancy',
-              email: 'engiplexservices@gmail.com',
+              name: ENV.EMAIL_FROM_NAME || 'Engiplex Consultancy',
+              email: ENV.EMAIL_FROM || 'engiplexservices@gmail.com',
             },
             subject: payload.subject,
             htmlContent: payload.html,
           }),
         });
 
-        const brevoData: any = await brevoRes.json().catch(() => ({}));
+        const brevoText = await brevoRes.text();
+        let brevoData: any = {};
+        try {
+          brevoData = JSON.parse(brevoText);
+        } catch {
+          brevoData = { raw: brevoText };
+        }
+
         if (brevoRes.ok && brevoData.messageId) {
           console.log(`[Brevo Email Sent Successfully] Message ID: ${brevoData.messageId} to ${payload.to}`);
           return true;
         } else {
-          console.warn('[Brevo API Warning]', brevoData);
+          console.warn(`[Brevo API Error ${brevoRes.status}]:`, brevoData);
         }
       } catch (brevoErr) {
         console.error('[Brevo Email Error]', brevoErr);
       }
     }
 
-    // 2. Fallback to Nodemailer SMTP
+    // 3. Fallback to Nodemailer SMTP (Gmail or custom SMTP host)
     if (transporter) {
       try {
         await transporter.sendMail({
-          from: `"${ENV.EMAIL_FROM_NAME || 'ENGIPLEX Consultation'}" <${ENV.EMAIL_FROM}>`,
+          from: `"${ENV.EMAIL_FROM_NAME || 'ENGIPLEX Consultation'}" <${ENV.GMAIL_USER || ENV.EMAIL_FROM}>`,
           to: payload.to.trim(),
           subject: payload.subject,
           html: payload.html,
         });
-        console.log('[SMTP Email Sent Successfully]');
+        console.log('[SMTP Email Sent Successfully] to', payload.to);
         return true;
-      } catch (error) {
-        console.error('[Email] Failed to send email via SMTP:', error);
+      } catch (error: any) {
+        console.error('[Email] Failed to send email via SMTP:', error?.message || error);
         return false;
       }
     }
