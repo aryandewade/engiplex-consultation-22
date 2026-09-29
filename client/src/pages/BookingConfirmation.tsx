@@ -278,7 +278,7 @@ export const BookingConfirmation: React.FC<ConfirmationProps> = ({ bookingId, on
           <div className="space-y-0.5">
             <p className="font-semibold text-zinc-700 flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Verified Electronic Invoice — DPDP 2023 &amp; IT Act Compliant
+              Verified Electronic Invoice 
             </p>
             <p>Meeting link dispatched to: {customerEmail || 'your email'}</p>
           </div>
