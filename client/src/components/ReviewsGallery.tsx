@@ -623,7 +623,7 @@ export const ReviewsGallery: React.FC = () => {
 
                   {/* Feedback Quote */}
                   <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed font-normal">
-                    "{rev.quote}"
+                    {(rev.quote || '').replace(/^["“”']+|["“”']+$/g, '')}
                   </p>
                 </div>
 
